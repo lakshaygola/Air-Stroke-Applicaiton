@@ -17,15 +17,22 @@ Contours can be explained simply as a curve joining all the continuous points (a
 The contours are a useful tool for shape analysis and object detection and recognition. 
 In OpenCV, finding contours is like finding white object from black background.
 
-![Air Strokes Application  pdf - Personal - Microsoft​ Edge 17-05-2021 02_07_59](https://user-images.githubusercontent.com/60484223/118411946-d9d64980-b6b4-11eb-9782-6150aad7a52c.png)
 
 ## Algorithm I used to create the model
 
+![Air Strokes Application  pdf - Personal - Microsoft​ Edge 17-05-2021 02_07_59](https://user-images.githubusercontent.com/60484223/118411946-d9d64980-b6b4-11eb-9782-6150aad7a52c.png)
+
+
 1: Import the necessary libraries and initialize variables that are used.
+
 2: Setup The Paint Interface.
+
 3: Start Reading The Video (Frame by Frame).
+
 4: Find The Contour-Of-Interest.
+
 5: Start Drawing And Store The Drawings.
+
 6: Show The Drawings On The Screen.
 
 
