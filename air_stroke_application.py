@@ -1,19 +1,12 @@
-import numpy as np
 import cv2
+import numpy as np
 from collections import deque
+from utils.trackbars import color_trackbars
+from utils.white_board_window import create_white_board_window
 
-# Default called trackbar function
-def setValues(x):
-   print("")
 
-# Creating the trackbars needed for adjusting the marker colour
-cv2.namedWindow("Color detectors")
-cv2.createTrackbar("Upper Hue", "Color detectors", 153, 180, setValues)
-cv2.createTrackbar("Upper Saturation", "Color detectors", 255, 255, setValues)
-cv2.createTrackbar("Upper Value", "Color detectors", 255, 255, setValues)
-cv2.createTrackbar("Lower Hue", "Color detectors", 64, 180, setValues)
-cv2.createTrackbar("Lower Saturation", "Color detectors", 72, 255, setValues)
-cv2.createTrackbar("Lower Value", "Color detectors", 49, 255, setValues)
+# Function call to create trackbars
+color_trackbars()
 
 # Giving different arrays to handle colour points of different colour
 bpoints = [deque(maxlen=1024)]
@@ -33,24 +26,12 @@ kernel = np.ones((5, 5), np.uint8)
 colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (0, 255, 255)]
 colorIndex = 0
 
-# Here is code for Canvas setup
-paintWindow = np.ones((471, 636, 3))
-paintWindow = cv2.rectangle(paintWindow, (40, 1), (140, 65), (0, 0, 0), 2)
-paintWindow = cv2.rectangle(paintWindow, (160, 1), (255, 65), colors[0], -1)
-paintWindow = cv2.rectangle(paintWindow, (275, 1), (370, 65), colors[1], -1)
-paintWindow = cv2.rectangle(paintWindow, (390, 1), (485, 65), colors[2], -1)
-paintWindow = cv2.rectangle(paintWindow, (505, 1), (600, 65), colors[3], -1)
 
-cv2.putText(paintWindow, "CLEAR", (49, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2, cv2.LINE_AA)
-cv2.putText(paintWindow, "BLUE", (185, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-cv2.putText(paintWindow, "GREEN", (298, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-cv2.putText(paintWindow, "RED", (420, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-cv2.putText(paintWindow, "YELLOW", (520, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (150, 150, 150), 2, cv2.LINE_AA)
-cv2.namedWindow('Paint', cv2.WINDOW_AUTOSIZE)
+paint_window = create_white_board_window()
 
 
 # Loading the default webcam of PC.
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 # Keep looping
 while True:
@@ -116,7 +97,7 @@ while True:
                 red_index = 0
                 yellow_index = 0
 
-                paintWindow[67:,:,:] = 255
+                paint_window[67:,:,:] = 255
             elif 160 <= center[0] <= 255:
                     colorIndex = 0        # Blue
             elif 275 <= center[0] <= 370:
@@ -153,11 +134,11 @@ while True:
                 if points[i][j][k - 1] is None or points[i][j][k] is None:
                     continue
                 cv2.line(frame, points[i][j][k - 1], points[i][j][k], colors[i], 2)
-                cv2.line(paintWindow, points[i][j][k - 1], points[i][j][k], colors[i], 2)
+                cv2.line(paint_window, points[i][j][k - 1], points[i][j][k], colors[i], 2)
 
     # Show all the windows
     cv2.imshow("Tracking", frame)
-    cv2.imshow("Paint", paintWindow)
+    cv2.imshow("Paint", paint_window)
     cv2.imshow("mask", Mask)
 
 # If the 'q' key is pressed then stop the application
